@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progresión 11: Energía Potencial Eléctrica y Voltaje</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #e0e7ff;
+            --secondary: #0284c7;
+            --secondary-light: #e0f2fe;
+            --accent: #059669;
+            --accent-light: #d1fae5;
+            --warning: #d97706;
+            --warning-light: #fef3c7;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border: #cbd5e1;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.55;
+            padding-bottom: 40px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .header-subtitle {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #c7d2fe;
+            font-weight: 700;
+        }
+
+        .header-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background-color: #34d399;
+            transition: width 0.3s ease;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            margin-top: 4px;
+            color: #e0e7ff;
+            font-weight: 600;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto 0;
+            padding: 0 16px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+
+        h2 {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        h3 {
+            color: var(--secondary);
+            font-size: 1.05rem;
+            margin: 16px 0 10px;
+        }
+
+        p {
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .micro-read {
+            background-color: #f1f5f9;
+            border-left: 4px solid var(--primary);
+            padding: 14px 16px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin: 14px 0;
+            font-size: 0.95rem;
+        }
+
+        .micro-read strong {
+            color: var(--primary-dark);
+        }
+
+        /* Estilo tipográfico para bloques de fórmulas matemáticas limpias */
+        .math-block {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            text-align: center;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 12px 0;
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
+        }
+
+        /* Componente CSS para Fracciones Verticales Limpias */
+        .frac-box {
+            display: inline-flex;
+            flex-direction: column;
+            vertical-align: middle;
+            text-align: center;
+            padding: 0 4px;
+            font-size: 0.95em;
+        }
+
+        .frac-box .numerator {
+            border-bottom: 2px solid currentColor;
+            padding-bottom: 2px;
+            line-height: 1.1;
+        }
+
+        .frac-box .denominator {
+            padding-top: 2px;
+            line-height: 1.1;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: var(--radius-md);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            touch-action: manipulation;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background-color: #cbd5e1;
+        }
+
+        .btn-hint {
+            background-color: var(--warning-light);
+            color: var(--warning);
+            border: 1px solid #fcd34d;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            width: auto;
+            margin-top: 8px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.88rem;
+            margin-bottom: 6px;
+            color: var(--text-muted);
+        }
+
+        .input-group input, .input-group textarea, .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            background-color: #fff;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            outline: 2px solid var(--primary);
+            border-color: transparent;
+        }
+
+        .option-card {
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+        }
+
+        .option-card.selected {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .option-card.correct {
+            border-color: var(--accent);
+            background-color: var(--accent-light);
+            color: #065f46;
+        }
+
+        .option-card.incorrect {
+            border-color: var(--danger);
+            background-color: var(--danger-light);
+            color: #991b1b;
+        }
+
+        .feedback-box {
+            padding: 14px 16px;
+            border-radius: var(--radius-sm);
+            margin-top: 12px;
+            font-size: 0.92rem;
+            display: none;
+            line-height: 1.5;
+        }
+
+        .feedback-box.show {
+            display: block;
+        }
+
+        .feedback-box.correct {
+            background-color: var(--accent-light);
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .feedback-box.incorrect {
+            background-color: var(--danger-light);
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .sim-container {
+            width: 100%;
+            background: #0f172a;
+            border-radius: var(--radius-md);
+            padding: 16px;
+            text-align: center;
+            color: white;
+            margin: 12px 0;
+            overflow: hidden;
+        }
+
+        .sim-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .sim-btn {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .sim-btn.active {
+            background: var(--primary);
+            border-color: var(--primary-light);
+        }
+
+        .matching-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .drag-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 12px;
+            background: #f1f5f9;
+            border-radius: var(--radius-sm);
+            min-height: 50px;
+            margin-bottom: 12px;
+        }
+
+        .chip {
+            background: white;
+            border: 1px solid var(--primary);
+            color: var(--primary-dark);
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            user-select: none;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .chip.selected {
+            background: var(--primary);
+            color: white;
+        }
+
+        .slot {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            font-size: 0.85rem;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .slot.filled {
+            border-style: solid;
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .slot.correct-slot {
+            border-color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .slot.incorrect-slot {
+            border-color: var(--danger);
+            background: var(--danger-light);
+        }
+
+        .quiz-nav-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .quiz-nav-btn {
+            padding: 8px 0;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: white;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .quiz-nav-btn.active {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .quiz-nav-btn.answered {
+            background: #e2e8f0;
+            color: var(--text-main);
+        }
+
+        .evidence-card {
+            background: #ffffff;
+            border: 3px solid var(--primary-dark);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .evidence-header {
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        .evidence-title {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+            font-weight: 900;
+        }
+
+        .evidence-badge {
+            background: var(--accent);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        .evidence-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            text-align: left;
+            margin: 16px 0;
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+        }
+
+        .evidence-item {
+            font-size: 0.88rem;
+        }
+
+        .evidence-item label {
+            display: block;
+            font-weight: 700;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .evidence-item val {
+            font-weight: 800;
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+
+        .compact-code {
+            background: #0f172a;
+            color: #38bdf8;
+            font-family: monospace;
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            word-break: break-all;
+            margin: 14px 0;
+            border: 1px dashed #0284c7;
+        }
+
+        .alert-whatsapp {
+            background-color: var(--accent-light);
+            color: #065f46;
+            border: 2px dashed var(--accent);
+            padding: 12px;
+            border-radius: var(--radius-md);
+            font-weight: 800;
+            font-size: 0.95rem;
+            margin-top: 16px;
+        }
+
+        .step-container {
+            display: none;
+        }
+
+        .step-container.active {
+            display: block;
+        }
+
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="header-subtitle">FÍSICA • APRENDIZAJE AUTÓNOMO A DISTANCIA</div>
+            <div class="header-title">PROGRESIÓN 11: Energía Potencial Eléctrica y Voltaje</div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="progressBar"></div>
+            </div>
+            <div class="step-indicator">
+                <span id="stepText">Inicio</span>
+                <span id="timerDisplay">Tiempo Activo: 00:00</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- STEP 0: INICIO E IDENTIFICACIÓN -->
+        <div class="step-container active" id="step0">
+            <div class="card">
+                <h2>👋 Bienvenida y Registro</h2>
+                <p><strong>LA ENERGÍA EN LOS PROCESOS DE LA VIDA DIARIA — PROGRESIÓN 11</strong></p>
+                <div class="micro-read">
+                    "Esta actividad está diseñada para que puedas estudiar la <strong>Progresión 11</strong> por tu cuenta. Lee con atención, observa las representaciones visuales, interactúa con las simulaciones y utiliza las pistas cuando lo necesites. <strong>Equivocarte también forma parte del aprendizaje.</strong> Al terminar realizarás una evaluación breve y obtendrás una pantalla de evidencia para enviar a tu profesor."
+                </div>
+
+                <div class="input-group">
+                    <label for="inputName">Nombre completo del estudiante *</label>
+                    <input type="text" id="inputName" placeholder="Ej. Ana Lucía Mendoza Pérez" autocomplete="off">
+                </div>
+
+                <div class="input-group">
+                    <label for="inputGroup">Grupo *</label>
+                    <input type="text" id="inputGroup" placeholder="Ej. 4° A" autocomplete="off">
+                </div>
+
+                <div class="micro-read" style="border-left-color: var(--accent);">
+                    📌 <strong>Modalidad Trabajo Autónomo:</strong> Tu profesor atenderá comisiones académicas. No requieres su presencia en tiempo real; la aplicación te enseñará, preguntará, dará retroalimentación y registrará tu avance.
+                </div>
+
+                <button class="btn btn-primary" onclick="startSession()">🚀 COMENZAR MI SESIÓN</button>
+            </div>
+        </div>
+
+        <!-- STEP 1: ENGANCHA -->
+        <div class="step-container" id="step1">
+            <div class="card">
+                <h2>1. ENGANCHA: Cambio de posición en un campo</h2>
+                <p>Imagina una carga eléctrica inmersa en una región del espacio donde existe un campo eléctrico uniforme. <em>¿Qué ocurre con la energía del sistema si la carga se mueve de un punto a otro?</em></p>
+
+                <div class="micro-read">
+                    <strong>Idea central de la Progresión 11:</strong> Cuando dos objetos que interactúan a través de un campo cambian de posición relativa, la <strong>energía almacenada en el campo cambia</strong>.
+                </div>
+
+                <h3>🧪 Simulación Interactiva 1: Mover Cargas en un Campo</h3>
+                <p>Selecciona el tipo de carga y la dirección de movimiento para observar cómo cambia la energía potencial eléctrica (<i>U</i><sub>p</sub>):</p>
+
+                <div class="sim-container">
+                    <svg id="svgSim1" viewBox="0 0 400 200" width="100%" height="200">
+                        <defs>
+                            <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#38bdf8" />
+                            </marker>
+                            <marker id="arrowRed" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444" />
+                            </marker>
+                        </defs>
+
+                        <!-- Electric Field Lines pointing DOWN -->
+                        <line x1="50" y1="20" x2="50" y2="180" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)"/>
+                        <line x1="150" y1="20" x2="150" y2="180" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)"/>
+                        <line x1="250" y1="20" x2="250" y2="180" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)"/>
+                        <text x="260" y="35" fill="#38bdf8" font-size="12" font-weight="bold">Campo Eléctrico (E)</text>
+
+                        <!-- Positions A and B -->
+                        <circle cx="150" cy="50" r="4" fill="#fbbf24"/>
+                        <text x="160" y="55" fill="#fbbf24" font-size="12" font-weight="bold">Posición A (Alta Posición)</text>
+
+                        <circle cx="150" cy="150" r="4" fill="#fbbf24"/>
+                        <text x="160" y="155" fill="#fbbf24" font-size="12" font-weight="bold">Posición B (Baja Posición)</text>
+
+                        <!-- Moving Charge Object -->
+                        <g id="simChargeGroup" transform="translate(150, 50)">
+                            <circle cx="0" cy="0" r="16" id="simChargeCircle" fill="#ef4444" stroke="#fff" stroke-width="2"/>
+                            <text x="0" y="5" text-anchor="middle" id="simChargeText" fill="#fff" font-size="16" font-weight="bold">+</text>
+                        </g>
+
+                        <!-- Energy Meter Bar -->
+                        <rect x="330" y="30" width="30" height="130" fill="#334155" rx="4"/>
+                        <rect id="simEnergyBar" x="332" y="40" width="26" height="118" fill="#ef4444" rx="2"/>
+                        <text x="345" y="178" fill="#fff" font-size="10" text-anchor="middle">Energía Up</text>
+                    </svg>
+
+                    <div class="sim-controls">
+                        <button class="sim-btn active" id="btnChargePos" onclick="setSimCharge('+')">Carga Positiva (+q)</button>
+                        <button class="sim-btn" id="btnChargeNeg" onclick="setSimCharge('-')">Carga Negativa (-q)</button>
+                        <button class="sim-btn" id="btnMoveDown" onclick="moveSimCharge('down')">⬇️ Mover en Dirección del Campo</button>
+                        <button class="sim-btn" id="btnMoveUp" onclick="moveSimCharge('up')">⬆️ Mover en Contra del Campo</button>
+                    </div>
+                    <div id="simStatusText" style="font-size:0.85rem; margin-top:10px; color:#cbd5e1;">
+                        Estado: Carga positiva en Posición A.
+                    </div>
+                </div>
+
+                <h3>❓ Pregunta de Predicción Analítica</h3>
+                <p>Si movemos una <strong>carga positiva (+q)</strong> a favor de la dirección del campo eléctrico (de arriba hacia abajo): ¿Qué esperas que suceda con su energía potencial eléctrica?</p>
+
+                <div id="optsEngage">
+                    <div class="option-card" onclick="checkEngage(1, this)">
+                        <span>A) Aumenta la energía potencial eléctrica.</span>
+                    </div>
+                    <div class="option-card" onclick="checkEngage(2, this)">
+                        <span>B) Disminuye la energía potencial eléctrica.</span>
+                    </div>
+                    <div class="option-card" onclick="checkEngage(3, this)">
+                        <span>C) No cambia en absoluto.</span>
+                    </div>
+                </div>
+                <button class="btn btn-hint" onclick="useHint('Engancha: Recuerda que el campo eléctrico ejerce fuerza en su propia dirección sobre cargas positivas. Si se mueve libremente a favor del campo, libera energía acumulada.')">💡 Necesito una pista</button>
+
+                <div class="feedback-box" id="fbEngage"></div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="goToStep(2)">Continuar a 2. EXPLORA ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2: EXPLORA -->
+        <div class="step-container" id="step2">
+            <div class="card">
+                <h2>2. EXPLORA: Trabajo, Campo y Magnitudes</h2>
+                <p>Analicemos la formulación matemática rigurosa presentada en las fuentes bibliográficas oficiales.</p>
+
+                <div class="micro-read">
+                    <strong>Trabajo y Energía Potencial Eléctrica:</strong><br>
+                    En mecánica, el trabajo es <i>W</i> = <i>F</i> · <i>d</i>. En electrostática, si aplicamos una fuerza para mover una carga <i>q</i> dentro de un campo eléctrico constante <i>E</i> una distancia <i>y</i>, el trabajo realizado es <i>W</i> = <i>q</i> · <i>E</i> · <i>y</i>.<br><br>
+                    Para evitar discrepancias entre el cálculo algebraico y la realidad física intuitiva, se adopta la convención formal de signos de las fuentes oficiales:
+                    
+                    <div class="math-block">
+                        <i>W</i> = −Δ<i>U</i><sub>p</sub>
+                    </div>
+                    
+                    Es decir, <em>cuando el campo eléctrico realiza un trabajo positivo sobre la carga, la energía potencial eléctrica del sistema disminuye (ΔU<sub>p</sub> &lt; 0)</em>.
+                </div>
+
+                <div class="micro-read" style="border-left-color: var(--secondary);">
+                    <strong>Diferencia de Potencial (Voltaje):</strong><br>
+                    Dividiendo el trabajo por unidad de carga de prueba:
+                    
+                    <div class="math-block">
+                        Δ<i>V</i> = <span class="frac-box"><span class="numerator"><i>W</i></span><span class="denominator"><i>q</i></span></span> = −<span class="frac-box"><span class="numerator">Δ<i>U</i><sub>p</sub></span><span class="denominator"><i>q</i></span></span>
+                    </div>
+                    
+                    El cociente <i>W</i> / <i>q</i> representa la <strong>diferencia de potencial</strong> entre dos puntos. Sus unidades son <strong>Joule / Coulomb</strong>, denominadas <strong>Voltio (V)</strong>:
+                    
+                    <div class="math-block">
+                        1 Voltio (V) = 1 <span class="frac-box"><span class="numerator">Joule (J)</span><span class="denominator">Coulomb (C)</span></span>
+                    </div>
+                </div>
+
+                <h3>🧩 Actividad: Relaciona cada Magnitud Física con su Unidad</h3>
+                <p>Selecciona una magnitud del banco y luego toca su casilla correspondiente:</p>
+
+                <div class="drag-bank" id="chipBankUnits">
+                    <div class="chip" onclick="selectChip(this, 'Joule (J)')">Joule (J)</div>
+                    <div class="chip" onclick="selectChip(this, 'Coulomb (C)')">Coulomb (C)</div>
+                    <div class="chip" onclick="selectChip(this, 'Voltio (V)')">Voltio (V)</div>
+                    <div class="chip" onclick="selectChip(this, 'Joule / Coulomb (J/C)')">Joule / Coulomb (J/C)</div>
+                </div>
+
+                <div class="matching-grid">
+                    <div>
+                        <strong>1. Energía Potencial (<i>U</i><sub>p</sub>)</strong>
+                        <div class="slot" id="slotU" onclick="assignSlot(this, 'Joule (J)')">Toca para colocar unidad</div>
+                    </div>
+                    <div>
+                        <strong>2. Carga Eléctrica (<i>q</i>)</strong>
+                        <div class="slot" id="slotQ" onclick="assignSlot(this, 'Coulomb (C)')">Toca para colocar unidad</div>
+                    </div>
+                    <div>
+                        <strong>3. Diferencia de Potencial (Δ<i>V</i>)</strong>
+                        <div class="slot" id="slotV" onclick="assignSlot(this, 'Voltio (V)')">Toca para colocar unidad</div>
+                    </div>
+                    <div>
+                        <strong>4. Equivale a 1 Voltio (1 V)</strong>
+                        <div class="slot" id="slotEquiv" onclick="assignSlot(this, 'Joule / Coulomb (J/C)')">Toca para colocar unidad</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary" style="margin-top:8px;" onclick="checkUnitsMatching()">COMPROBAR RELACIONES</button>
+                <button class="btn btn-hint" onclick="useHint('Explora: La energía se mide en Joules, la carga en Coulombs. El Voltio mide energía por cada Coulomb de carga (J/C).')">💡 Necesito una pista</button>
+
+                <div class="feedback-box" id="fbUnits"></div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="goToStep(1)">⬅️ Anterior</button>
+                    <button class="btn btn-primary" onclick="goToStep(3)">Continuar a 3. COMPRENDE ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 3: COMPRENDE -->
+        <div class="step-container" id="step3">
+            <div class="card">
+                <h2>3. COMPRENDE: Potencial vs Energía Potencial y Baterías</h2>
+                
+                <div class="micro-read">
+                    ⚠️ <strong>Diferencia Fundamental:</strong><br>
+                    • <strong>Energía Potencial Eléctrica (<i>U</i><sub>p</sub>):</strong> Depende del valor de la carga de prueba <i>q</i> y de su posición en el campo (<i>U</i><sub>p</sub> = <i>q</i> · <i>E</i> · <i>y</i>). Se mide en Joules (J).<br>
+                    • <strong>Potencial Eléctrico (<i>V</i>):</strong> Es una propiedad intrínseca del <em>punto en el espacio</em>, independiente de la carga de prueba (<i>V</i> = <i>U</i><sub>p</sub> / <i>q</i>). Se mide en Voltios (V).
+                </div>
+
+                <h3>🔋 Representación Visual: La Batería Eléctrica</h3>
+                <p>Una batería NO es un "recipiente lleno de electricidad". Es un dispositivo electroquímico que <strong>mantiene una diferencia de potencial (Δ<i>V</i>) entre sus terminales</strong> mediante fuerzas químicas internas.</p>
+
+                <div class="sim-container">
+                    <svg viewBox="0 0 360 160" width="100%" height="160">
+                        <!-- Battery Case -->
+                        <rect x="80" y="30" width="200" height="100" fill="#334155" rx="8" stroke="#94a3b8" stroke-width="2"/>
+                        <rect x="280" y="60" width="15" height="40" fill="#cbd5e1" rx="3"/>
+                        
+                        <!-- Internal Terminal Regions -->
+                        <rect x="90" y="40" width="50" height="80" fill="#ef4444" opacity="0.85" rx="4"/>
+                        <text x="115" y="85" fill="#fff" font-weight="bold" text-anchor="middle" font-size="20">+</text>
+                        <text x="115" y="105" fill="#fff" font-size="10" text-anchor="middle">Terminal (+)</text>
+
+                        <rect x="220" y="40" width="50" height="80" fill="#3b82f6" opacity="0.85" rx="4"/>
+                        <text x="245" y="85" fill="#fff" font-weight="bold" text-anchor="middle" font-size="20">-</text>
+                        <text x="245" y="105" fill="#fff" font-size="10" text-anchor="middle">Terminal (-)</text>
+
+                        <!-- Chemical force arrow -->
+                        <path d="M 210 80 L 150 80" stroke="#f59e0b" stroke-width="4" marker-end="url(#arrowRed)"/>
+                        <text x="180" y="72" fill="#fbbf24" font-size="10" font-weight="bold" text-anchor="middle">Fuerza Química Interna</text>
+                        <text x="180" y="135" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle">ΔV = 1.5 V (1.5 J por cada Coulomb)</text>
+                    </svg>
+                </div>
+
+                <h3>⚖️ Validación de Afirmaciones Conceptuales</h3>
+                <p>Evalúa si las siguientes afirmaciones son <strong>CORRECTAS</strong> o si <strong>NECESITAN CORRECCIÓN</strong>:</p>
+
+                <div id="tfContainer">
+                    <div style="margin-bottom:14px;">
+                        <p><strong>1. "El potencial eléctrico y la energía potencial eléctrica son exactamente la misma magnitud."</strong></p>
+                        <button class="btn btn-secondary" style="width:auto; display:inline-block; padding:8px 16px;" onclick="checkTF(1, true)">Correcta</button>
+                        <button class="btn btn-secondary" style="width:auto; display:inline-block; padding:8px 16px;" onclick="checkTF(1, false)">Necesita Corrección</button>
+                        <div class="feedback-box" id="fbTF1"></div>
+                    </div>
+
+                    <div style="margin-bottom:14px;">
+                        <p><strong>2. "Una batería de 1.5 V indica que se realizan 1.5 Joules de trabajo por cada Coulomb de carga trasladado entre sus terminales."</strong></p>
+                        <button class="btn btn-secondary" style="width:auto; display:inline-block; padding:8px 16px;" onclick="checkTF(2, true)">Correcta</button>
+                        <button class="btn btn-secondary" style="width:auto; display:inline-block; padding:8px 16px;" onclick="checkTF(2, false)">Necesita Corrección</button>
+                        <div class="feedback-box" id="fbTF2"></div>
+                    </div>
+                </div>
+
+                <button class="btn btn-hint" onclick="useHint('Comprende: El potencial V = Up/q se refiere a energía por unidad de carga. Las baterías separan cargas químicamente para mantener esa diferencia.')">💡 Necesito una pista</button>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="goToStep(2)">⬅️ Anterior</button>
+                    <button class="btn btn-primary" onclick="goToStep(4)">Continuar a 4. ORGANIZA ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 4: ORGANIZA -->
+        <div class="step-container" id="step4">
+            <div class="card">
+                <h2>4. ORGANIZA: Mapa Conceptual Táctil</h2>
+                <p>Organiza la red conceptual de la Progresión 11. Selecciona un término del banco y colócalo en el espacio interactivo correspondiente:</p>
+
+                <div class="drag-bank" id="mapBank">
+                    <div class="chip" onclick="selectMapChip(this, 'Campo Eléctrico')">Campo Eléctrico</div>
+                    <div class="chip" onclick="selectMapChip(this, 'Trabajo')">Trabajo</div>
+                    <div class="chip" onclick="selectMapChip(this, 'Energía Potencial Eléctrica')">Energía Potencial Eléctrica</div>
+                    <div class="chip" onclick="selectMapChip(this, 'Diferencia de Potencial')">Diferencia de Potencial</div>
+                    <div class="chip" onclick="selectMapChip(this, 'Voltio')">Voltio</div>
+                    <div class="chip" onclick="selectMapChip(this, 'Batería')">Batería</div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:12px; margin:16px 0;">
+                    <div class="slot" id="mapSlot1" onclick="assignMapSlot(this, 'Campo Eléctrico')">
+                        1. Región del espacio donde cargas experimentan fuerzas ➔ [ Vacío ]
+                    </div>
+                    <div class="slot" id="mapSlot2" onclick="assignMapSlot(this, 'Trabajo')">
+                        2. Transferencia de energía producida al mover una carga W = q · E · d ➔ [ Vacío ]
+                    </div>
+                    <div class="slot" id="mapSlot3" onclick="assignMapSlot(this, 'Energía Potencial Eléctrica')">
+                        3. Energía almacenada en la configuración del campo (Up = q · E · y) ➔ [ Vacío ]
+                    </div>
+                    <div class="slot" id="mapSlot4" onclick="assignMapSlot(this, 'Diferencia de Potencial')">
+                        4. Cociente W / q entre dos puntos, también llamado voltaje ➔ [ Vacío ]
+                    </div>
+                    <div class="slot" id="mapSlot5" onclick="assignMapSlot(this, 'Voltio')">
+                        5. Unidad del Sistema Internacional equivalente a 1 Joule/Coulomb ➔ [ Vacío ]
+                    </div>
+                    <div class="slot" id="mapSlot6" onclick="assignMapSlot(this, 'Batería')">
+                        6. Dispositivo que almacena energía química para mantener una ΔV ➔ [ Vacío ]
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary" onclick="checkConceptMap()">VERIFICAR MAPA CONCEPTUAL</button>
+                <button class="btn btn-hint" onclick="useHint('Organiza: Revisa las definiciones: la Batería mantiene la ΔV (medida en Voltios), el Trabajo W modifica la Energía Potencial.')">💡 Necesito una pista</button>
+
+                <div class="feedback-box" id="fbMap"></div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="goToStep(3)">⬅️ Anterior</button>
+                    <button class="btn btn-primary" onclick="goToStep(5)">Continuar a 5. APLICA ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 5: APLICA -->
+        <div class="step-container" id="step5">
+            <div class="card">
+                <h2>5. APLICA: Fenómenos Naturales y Cálculos Breves</h2>
+                
+                <h3>⚡ Aplicación Natural: Descargas Eléctricas y Rayos</h3>
+                <p>Las fuentes oficiales destacan que las turbulencias atmosféricas separan cargas en las nubes de tormenta (cúmulo-nimbus), generando un campo eléctrico colosal.</p>
+
+                <div class="sim-container">
+                    <svg viewBox="0 0 360 150" width="100%" height="150">
+                        <path d="M 50 60 Q 60 30 90 40 Q 120 20 160 35 Q 200 20 230 40 Q 260 30 280 60 Q 300 80 270 100 Q 250 110 90 100 Q 40 90 50 60 Z" fill="#475569"/>
+                        <text x="100" y="55" fill="#f8fafc" font-size="12" font-weight="bold">+ + + (Carga Superior)</text>
+                        <text x="100" y="85" fill="#ef4444" font-size="12" font-weight="bold">- - - - - (Carga Inferior)</text>
+
+                        <rect x="0" y="130" width="360" height="20" fill="#15803d"/>
+                        <text x="40" y="125" fill="#34d399" font-size="10" font-weight="bold">+ + + + + (Inducción en Tierra)</text>
+
+                        <path d="M 170 95 L 155 110 L 165 115 L 140 135" stroke="#fbbf24" stroke-width="3" fill="none"/>
+                        <text x="210" y="120" fill="#fbbf24" font-size="10" font-weight="bold">Descarga ΔV ≈ 90,000,000 V</text>
+                    </svg>
+                </div>
+
+                <div class="micro-read">
+                    El aire actúa como aislante hasta que el campo eléctrico alcanza un valor límite de aproximadamente <strong>3 × 10<sup>6</sup> N/C</strong> (3,000,000 N/C). En ese momento, la capacidad aislante se rompe y ocurre la descarga eléctrica (rayo).
+                </div>
+
+                <h3>🧮 Ejercicio Guiado de Aplicación</h3>
+                <p><strong>Ejemplo 1 de las fuentes:</strong> La diferencia de potencial entre una nube de tormenta y el suelo es de <strong>Δ<i>V</i> = 90 × 10<sup>6</sup> V</strong> (90 millones de Voltios). Si en un rayo se transfieren <strong>2.1 C</strong> de carga, ¿cuál es el cambio en la energía potencial eléctrica (Δ<i>U</i><sub>p</sub>)?</p>
+
+                <div class="micro-read" style="background:#fff; border: 1px solid var(--border);">
+                    <p style="margin-bottom:8px;"><strong>Paso 1: Ecuación oficial:</strong></p>
+                    <div class="math-block">
+                        Δ<i>V</i> = −<span class="frac-box"><span class="numerator">Δ<i>U</i><sub>p</sub></span><span class="denominator"><i>q</i></span></span> &nbsp;⟹&nbsp; Δ<i>U</i><sub>p</sub> = −<i>q</i> · Δ<i>V</i>
+                    </div>
+                    <p style="margin-top:8px;"><strong>Paso 2: Sustitución de valores:</strong> Δ<i>U</i><sub>p</sub> = −(2.1 C) × (90 × 10<sup>6</sup> V)</p>
+                </div>
+
+                <div class="input-group">
+                    <label for="inputCalc1">Introduce el resultado del cálculo para Δ<i>U</i><sub>p</sub> en Joules (formato numérico o exponencial, ej. -1.89e8 o -189000000):</label>
+                    <input type="text" id="inputCalc1" placeholder="Ej. -1.89e8 J">
+                </div>
+                <button class="btn btn-secondary" onclick="checkCalc1()">VERIFICAR CÁLCULO</button>
+                <button class="btn btn-hint" onclick="useHint('Aplica: Multiplica -(2.1) por (90,000,000). El resultado es negativo indicando la liberación masiva de energía.')">💡 Necesito una pista</button>
+
+                <div class="feedback-box" id="fbCalc1"></div>
+
+                <div class="btn-group" style="margin-top:20px;">
+                    <button class="btn btn-secondary" onclick="goToStep(4)">⬅️ Anterior</button>
+                    <button class="btn btn-primary" onclick="goToStep(6)">Continuar a 6. COMPRUEBA (TEST FINAL) ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 6: COMPRUEBA (TEST FINAL) -->
+        <div class="step-container" id="step6">
+            <div class="card">
+                <h2>6. COMPRUEBA: Evaluación Formativa de la Progresión 11</h2>
+                <p>Responde los <strong>10 reactivos de opción múltiple</strong>. Puedes navegar libremente entre preguntas. Tu calificación final se mostrará al entregar el test.</p>
+
+                <div class="quiz-nav-grid" id="quizNavGrid"></div>
+
+                <div id="quizQuestionBox" style="min-height: 200px;">
+                    <!-- Question rendered dynamically -->
+                </div>
+
+                <div class="btn-group" style="margin-top: 14px;">
+                    <button class="btn btn-secondary" id="btnQuizPrev" onclick="navQuiz(-1)">⬅️ Anterior</button>
+                    <button class="btn btn-secondary" id="btnQuizNext" onclick="navQuiz(1)">Siguiente ➡️</button>
+                </div>
+
+                <div style="margin-top: 20px;" id="submitQuizContainer">
+                    <button class="btn btn-primary" id="btnSubmitQuiz" onclick="submitQuiz()" disabled style="opacity: 0.5;">
+                        📋 ENTREGAR EVALUACIÓN FINAL
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 7: REFLEXIONA Y EVIDENCIA -->
+        <div class="step-container" id="step7">
+            <div class="card">
+                <h2>7. REFLEXIONA Y REGISTRO DE EVIDENCIA</h2>
+                
+                <div class="input-group">
+                    <label for="reflectionText">En tus propias palabras: ¿Qué relación existe entre la posición de una carga en un campo, la energía potencial eléctrica y la diferencia de potencial (voltaje)? * (Mínimo 30 caracteres)</label>
+                    <textarea id="reflectionText" rows="3" placeholder="Escribe tu reflexión aquí..." oninput="validateReflection()"></textarea>
+                    <div id="reflectionLength" style="font-size:0.75rem; color:var(--text-muted); text-align:right;">0 / 30 caracteres</div>
+                </div>
+
+                <h3>📊 Preguntas de Percepción de Aprendizaje</h3>
+
+                <div class="input-group">
+                    <label for="perc1">1. Esta App me ayudó a comprender los contenidos de la Progresión 11:</label>
+                    <select id="perc1">
+                        <option value="4">4 — Mucho</option>
+                        <option value="3" selected>3 — Bastante</option>
+                        <option value="2">2 — Poco</option>
+                        <option value="1">1 — Nada o casi nada</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="perc2">2. Pude trabajar con esta App de manera autónoma sin necesitar al profesor a mi lado:</label>
+                    <select id="perc2">
+                        <option value="4" selected>4 — Totalmente</option>
+                        <option value="3">3 — En gran parte</option>
+                        <option value="2">2 — Con algunas dificultades</option>
+                        <option value="1">1 — Me resultó muy difícil</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary" id="btnGenerateCard" onclick="generateEvidenceCard()" disabled>
+                    🎓 GENERAR TARJETA DE EVIDENCIA FINAL
+                </button>
+            </div>
+
+            <!-- FINAL EVIDENCE CARD DISPLAY -->
+            <div id="evidenceDisplayContainer" style="display:none; margin-top:20px;">
+                <div class="evidence-card" id="evidenceCard">
+                    <div class="evidence-header">
+                        <div class="evidence-title">✅ PROGRESIÓN 11 COMPLETADA</div>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin:4px 0 0 0;">LA ENERGÍA EN LOS PROCESOS DE LA VIDA DIARIA</p>
+                        <div class="evidence-badge">ENERGÍA POTENCIAL ELÉCTRICA Y VOLTAJE</div>
+                    </div>
+
+                    <div class="evidence-grid">
+                        <div class="evidence-item">
+                            <label>Estudiante</label>
+                            <val id="evName">---</val>
+                        </div>
+                        <div class="evidence-item">
+                            <label>Grupo</label>
+                            <val id="evGroup">---</val>
+                        </div>
+                        <div class="evidence-item">
+                            <label>Resultado Evaluación</label>
+                            <val id="evScore">0 / 10 (0%)</val>
+                        </div>
+                        <div class="evidence-item">
+                            <label>Nivel Obtenido</label>
+                            <val id="evLevel">---</val>
+                        </div>
+                        <div class="evidence-item">
+                            <label>Tiempo Activo</label>
+                            <val id="evTime">00 min 00 s</val>
+                        </div>
+                        <div class="evidence-item">
+                            <label>Intentos Corrección (IC)</label>
+                            <val id="evErrors">0</val>
+                        </div>
+                        <div class="evidence-item">
+                            <label>Pistas Utilizadas (P)</label>
+                            <val id="evHints">0</val>
+                        </div>
+                        <div class="evidence-item">
+                            <label>Percepción Compren. / Autonom.</label>
+                            <val id="evPerception">C: 4/4 | A: 4/4</val>
+                        </div>
+                        <div class="evidence-item" style="grid-column: span 2;">
+                            <label>Fecha y Hora de Término</label>
+                            <val id="evDate">---</val>
+                        </div>
+                    </div>
+
+                    <div style="text-align:left; font-size:0.82rem; background:#f1f5f9; padding:10px; border-radius:8px; margin-bottom:12px;">
+                        <strong>SÍNTESIS DEL ESTUDIANTE:</strong>
+                        <p id="evReflection" style="font-style:italic; margin:4px 0 0 0; color:#334155;"></p>
+                    </div>
+
+                    <div class="compact-code" id="evCompactLine">
+                        📊 REGISTRO DE ACTIVIDAD: P11 | 0/10 | 0% | 00:00 | IC:0 | P:0 | C:0/4 | A:0/4
+                    </div>
+
+                    <div class="alert-whatsapp">
+                        📸 TOMA UNA CAPTURA DE ESTA PANTALLA Y ENVÍALA A TU PROFESOR POR WHATSAPP.
+                    </div>
+                </div>
+
+                <div style="margin-top:16px;">
+                    <button class="btn btn-secondary" onclick="reviewQuizAnswers()">🔍 REVISAR MIS RESPUESTAS DEL TEST</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        /* APP STATE & ANALYTICS VARIABLES */
+        let studentName = "";
+        let studentGroup = "";
+        let currentStep = 0;
+        
+        let activeTimeSeconds = 0;
+        let timerInterval = null;
+        
+        let formativeErrors = 0; // "Intentos de Corrección"
+        let hintsUsed = 0; // "Pistas Utilizadas"
+        
+        let simChargeType = '+';
+        let simChargePosY = 50;
+
+        let selectedChipText = null;
+        let selectedChipElem = null;
+
+        let selectedMapChipText = null;
+        let selectedMapChipElem = null;
+
+        // Quiz Questions Data (Totalmente limpias de LaTeX)
+        const quizQuestions = [
+            {
+                q: "1. ¿Qué sucede con la energía almacenada en un campo eléctrico cuando dos objetos cargados cambian su posición relativa?",
+                options: [
+                    "A) Permanece estrictamente constante sin importar el movimiento.",
+                    "B) Cambia en función de la nueva configuración del sistema y del campo.",
+                    "C) Se destruye completamente al mover la carga.",
+                    "D) Se convierte exclusivamente en fuerza gravitatoria."
+                ],
+                correct: 1,
+                exp: "La idea central de P11 establece que al cambiar la posición relativa de objetos en un campo, la energía almacenada en el campo cambia."
+            },
+            {
+                q: "2. Si una carga positiva (+q) se desplaza a favor de las líneas de un campo eléctrico uniforme, su energía potencial eléctrica:",
+                options: [
+                    "A) Disminuye.",
+                    "B) Aumenta.",
+                    "C) Se vuelve infinita.",
+                    "D) No sufre ningún cambio."
+                ],
+                correct: 0,
+                exp: "Al moverse a favor de la fuerza del campo, el campo realiza trabajo positivo y la energía potencial disminuye (convención W = −ΔUp)."
+            },
+            {
+                q: "3. ¿Cuál es la definición conceptual del Potencial Eléctrico (V) en un punto del espacio?",
+                options: [
+                    "A) La fuerza total multiplicada por la masa de la partícula.",
+                    "B) La energía potencial eléctrica por unidad de carga (V = Up / q).",
+                    "C) La cantidad de electrones almacenados en un aislante.",
+                    "D) El tiempo que tarda un rayo en caer al suelo."
+                ],
+                correct: 1,
+                exp: "El potencial eléctrico V se define como la energía potencial eléctrica asociada por cada unidad de carga de prueba (J/C)."
+            },
+            {
+                q: "4. ¿Qué unidad del Sistema Internacional equivale a 1 Joule por Coulomb (1 J/C)?",
+                options: [
+                    "A) Ampere (A)",
+                    "B) Watt (W)",
+                    "C) Voltio (V)",
+                    "D) Newton (N)"
+                ],
+                correct: 2,
+                exp: "Por definición, 1 Voltio es exactamente igual a 1 Joule sobre Coulomb (1 V = 1 J/C)."
+            },
+            {
+                q: "5. La convención matemática oficial entre Trabajo (W) y cambio en Energía Potencial (ΔUp) en el campo eléctrico es:",
+                options: [
+                    "A) W = −ΔUp",
+                    "B) W = (ΔUp)²",
+                    "C) W = 1 / ΔUp",
+                    "D) W = 0"
+                ],
+                correct: 0,
+                exp: "Para mantener coherencia con la física intuitiva, el trabajo realizado por el campo es igual al negativo del cambio en la energía potencial: W = −ΔUp."
+            },
+            {
+                q: "6. ¿Cómo funciona conceptualmente una batería eléctrica de 1.5 V?",
+                options: [
+                    "A) Es una caja que produce electrones infinitos de la nada.",
+                    "B) Mantiene una diferencia de potencial (1.5 J por C) mediante fuerzas químicas internas que separan cargas.",
+                    "C) Es un imán permanente que atrae cargas de la atmósfera.",
+                    "D) Contiene rayos en miniatura atrapados en su interior."
+                ],
+                correct: 1,
+                exp: "Una batería realiza trabajo químico para separar cargas y mantener una diferencia de potencial (energía por unidad de carga)."
+            },
+            {
+                q: "7. Durante una tormenta eléctrica, ¿cuál es la causa principal que origina la descarga de un rayo?",
+                options: [
+                    "A) El calor del Sol derrite las nubes instantáneamente.",
+                    "B) La separación de cargas crea un campo eléctrico tan intenso que el aire pierde su propiedad aislante.",
+                    "C) Las nubes chocan mecánicamente como dos piedras ruidosas.",
+                    "D) El campo gravitatorio de la Luna atrae los electrones."
+                ],
+                correct: 1,
+                exp: "La fricción y turbulencia separan cargas produciendo alto voltaje; cuando el campo supera la rigidez aislante del aire (aprox. 3 × 10⁶ N/C), este conduce produciendo la descarga."
+            },
+            {
+                q: "8. Si se requiere realizar un trabajo de 10 J para trasladar una carga de 0.02 C entre dos puntos, la diferencia de potencial (voltaje) es:",
+                options: [
+                    "A) 0.2 V",
+                    "B) 200 V",
+                    "C) 500 V",
+                    "D) 50 V"
+                ],
+                correct: 2,
+                exp: "ΔV = W / q = 10 J / 0.02 C = 500 V."
+            },
+            {
+                q: "9. ¿Cuál es la diferencia fundamental entre 'Energía Potencial Eléctrica' y 'Potencial Eléctrico'?",
+                options: [
+                    "A) Ninguna, son exactamente sinónimos.",
+                    "B) La energía potencial depende del valor de la carga de prueba; el potencial es una propiedad intrínseca del punto en el campo.",
+                    "C) La energía potencial se mide en Voltios y el potencial en Joules.",
+                    "D) El potencial sólo existe en los imanes."
+                ],
+                correct: 1,
+                exp: "Up = q · E · y depende de q (se mide en Joules). V = Up / q = E · y no depende de la carga de prueba (se mide en Voltios)."
+            },
+            {
+                q: "10. Si una nube de tormenta mantiene 90,000,000 V respecto al suelo y se transfieren 2.1 C en una descarga, el cambio de energía potencial es:",
+                options: [
+                    "A) -1.89 × 10⁸ J",
+                    "B) -4.29 × 10⁷ J",
+                    "C) +1.89 J",
+                    "D) 0 J"
+                ],
+                correct: 0,
+                exp: "ΔUp = −q · ΔV = −(2.1 C)(90 × 10⁶ V) = -1.89 × 10⁸ J (liberación masiva de energía)."
+            }
+        ];
+
+        let quizUserAnswers = new Array(10).fill(null);
+        let currentQuizIndex = 0;
+        let quizSubmitted = false;
+
+        window.onload = function() {
+            loadSavedState();
+            renderQuizNav();
+            renderQuizQuestion(0);
+        };
+
+        function startSession() {
+            const name = document.getElementById('inputName').value.trim();
+            const group = document.getElementById('inputGroup').value.trim();
+
+            if (!name || !group) {
+                alert("Por favor escribe tu Nombre Completo y Grupo para comenzar.");
+                return;
+            }
+
+            studentName = name;
+            studentGroup = group;
+            startActiveTimer();
+            goToStep(1);
+            saveState();
+        }
+
+        function startActiveTimer() {
+            if (timerInterval) return;
+            timerInterval = setInterval(() => {
+                if (!document.hidden && currentStep > 0 && currentStep < 7) {
+                    activeTimeSeconds++;
+                    updateTimerDisplay();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(activeTimeSeconds / 60);
+            const secs = activeTimeSeconds % 60;
+            const str = `Tiempo Activo: ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            document.getElementById('timerDisplay').innerText = str;
+        }
+
+        function goToStep(stepNum) {
+            document.querySelectorAll('.step-container').forEach(el => el.classList.remove('active'));
+            document.getElementById(`step${stepNum}`).classList.add('active');
+            currentStep = stepNum;
+
+            const percent = Math.round((stepNum / 7) * 100);
+            document.getElementById('progressBar').style.width = `${percent}%`;
+            
+            const stepLabels = [
+                "Inicio", "1. Engancha", "2. Explora", "3. Comprende", 
+                "4. Organiza", "5. Aplica", "6. Comprueba", "7. Evidencia"
+            ];
+            document.getElementById('stepText').innerText = stepLabels[stepNum] || "";
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            saveState();
+        }
+
+        function useHint(hintText) {
+            hintsUsed++;
+            alert(`💡 PISTA:\n\n${hintText}`);
+            saveState();
+        }
+
+        function setSimCharge(type) {
+            simChargeType = type;
+            document.getElementById('simChargeText').textContent = type;
+            document.getElementById('simChargeCircle').setAttribute('fill', type === '+' ? '#ef4444' : '#3b82f6');
+            document.getElementById('btnChargePos').classList.toggle('active', type === '+');
+            document.getElementById('btnChargeNeg').classList.toggle('active', type === '-');
+            updateSimStatus();
+        }
+
+        function moveSimCharge(dir) {
+            simChargePosY = (dir === 'down') ? 150 : 50;
+            const g = document.getElementById('simChargeGroup');
+            g.setAttribute('transform', `translate(150, ${simChargePosY})`);
+            updateSimStatus();
+        }
+
+        function updateSimStatus() {
+            const bar = document.getElementById('simEnergyBar');
+            const txt = document.getElementById('simStatusText');
+            
+            let isHighEnergy = false;
+            if (simChargeType === '+' && simChargePosY === 50) isHighEnergy = true;
+            if (simChargeType === '-' && simChargePosY === 150) isHighEnergy = true;
+
+            if (isHighEnergy) {
+                bar.setAttribute('y', '40');
+                bar.setAttribute('height', '118');
+                bar.setAttribute('fill', '#ef4444');
+                txt.innerHTML = `Posición: <strong style="color:#ef4444">ALTA Energía Potencial Eléctrica (Up)</strong>. Almacena más energía en el campo.`;
+            } else {
+                bar.setAttribute('y', '110');
+                bar.setAttribute('height', '48');
+                bar.setAttribute('fill', '#10b981');
+                txt.innerHTML = `Posición: <strong style="color:#10b981">BAJA Energía Potencial Eléctrica (Up)</strong>. Energía liberada o disminuida.`;
+            }
+        }
+
+        function checkEngage(optIndex, elem) {
+            const fb = document.getElementById('fbEngage');
+            const opts = document.querySelectorAll('#optsEngage .option-card');
+            opts.forEach(o => o.classList.remove('selected', 'correct', 'incorrect'));
+            elem.classList.add('selected');
+
+            if (optIndex === 2) {
+                elem.classList.add('correct');
+                fb.className = "feedback-box show correct";
+                fb.innerHTML = "✅ <strong>¡CORRECTO!</strong> Al moverse libremente a favor de las líneas del campo eléctrico, el campo realiza trabajo positivo y la <strong>energía potencial eléctrica disminuye</strong> (Δ<i>U</i><sub>p</sub> &lt; 0).";
+            } else {
+                elem.classList.add('incorrect');
+                formativeErrors++;
+                fb.className = "feedback-box show incorrect";
+                fb.innerHTML = "❌ <strong>Necesita revisión:</strong> Recuerda la analogía gravitatoria: cuando un objeto cae a favor de la fuerza, pierde energía potencial acumulada. Inténtalo de nuevo.";
+            }
+            saveState();
+        }
+
+        function selectChip(elem, text) {
+            document.querySelectorAll('#chipBankUnits .chip').forEach(c => c.classList.remove('selected'));
+            elem.classList.add('selected');
+            selectedChipText = text;
+            selectedChipElem = elem;
+        }
+
+        function assignSlot(slotElem, expectedVal) {
+            if (!selectedChipText) {
+                alert("Primero toca una unidad del banco superior.");
+                return;
+            }
+            slotElem.innerText = selectedChipText;
+            slotElem.dataset.userVal = selectedChipText;
+            slotElem.dataset.expectedVal = expectedVal;
+            slotElem.classList.add('filled');
+        }
+
+        function checkUnitsMatching() {
+            const slots = [
+                document.getElementById('slotU'),
+                document.getElementById('slotQ'),
+                document.getElementById('slotV'),
+                document.getElementById('slotEquiv')
+            ];
+
+            let allCorrect = true;
+            slots.forEach(s => {
+                if (s.dataset.userVal === s.dataset.expectedVal) {
+                    s.className = "slot filled correct-slot";
+                } else {
+                    s.className = "slot filled incorrect-slot";
+                    allCorrect = false;
+                }
+            });
+
+            const fb = document.getElementById('fbUnits');
+            if (allCorrect) {
+                fb.className = "feedback-box show correct";
+                fb.innerHTML = "✅ <strong>¡Excelente!</strong> Has asociado perfectamente cada magnitud física con sus unidades correspondientes del Sistema Internacional.";
+            } else {
+                formativeErrors++;
+                fb.className = "feedback-box show incorrect";
+                fb.innerHTML = "❌ <strong>Hay algunas unidades incorrectas:</strong> Revisa cuáles están marcadas en rojo y corrígelas.";
+            }
+            saveState();
+        }
+
+        function checkTF(qNum, userChoice) {
+            const fb = document.getElementById(`fbTF${qNum}`);
+            if (qNum === 1) {
+                if (userChoice === false) {
+                    fb.className = "feedback-box show correct";
+                    fb.innerHTML = "✅ <strong>¡Correcto!</strong> NO son lo mismo. La Energía Potencial (<i>U</i><sub>p</sub>) se mide en Joules y depende de la carga <i>q</i>. El Potencial (<i>V</i> = <i>U</i><sub>p</sub> / <i>q</i>) se mide en Voltios y es una propiedad intrínseca del punto en el espacio.";
+                } else {
+                    formativeErrors++;
+                    fb.className = "feedback-box show incorrect";
+                    fb.innerHTML = "❌ <strong>Incorrecto:</strong> Recuerda que el Potencial representa energía <em>por unidad de carga</em>, mientras que la energía potencial depende del valor de la carga.";
+                }
+            } else if (qNum === 2) {
+                if (userChoice === true) {
+                    fb.className = "feedback-box show correct";
+                    fb.innerHTML = "✅ <strong>¡Correcto!</strong> 1.5 V significa exactamente 1.5 Joules / 1 Coulomb. Es el trabajo por unidad de carga disponible entre las terminales.";
+                } else {
+                    formativeErrors++;
+                    fb.className = "feedback-box show incorrect";
+                    fb.innerHTML = "❌ <strong>Revisa la afirmación:</strong> Dado que 1 V = 1 J/C, una batería de 1.5 V aporta 1.5 Joules de energía a cada Coulomb de carga.";
+                }
+            }
+            saveState();
+        }
+
+        function selectMapChip(elem, text) {
+            document.querySelectorAll('#mapBank .chip').forEach(c => c.classList.remove('selected'));
+            elem.classList.add('selected');
+            selectedMapChipText = text;
+            selectedMapChipElem = elem;
+        }
+
+        function assignMapSlot(slotElem, expectedText) {
+            if (!selectedMapChipText) {
+                alert("Primero selecciona un concepto del banco superior.");
+                return;
+            }
+            slotElem.innerText = `${slotElem.innerText.split('➔')[0]} ➔ [ ${selectedMapChipText} ]`;
+            slotElem.dataset.userVal = selectedMapChipText;
+            slotElem.dataset.expectedVal = expectedText;
+            slotElem.classList.add('filled');
+        }
+
+        function checkConceptMap() {
+            let correctCount = 0;
+            for (let i = 1; i <= 6; i++) {
+                const slot = document.getElementById(`mapSlot${i}`);
+                if (slot.dataset.userVal === slot.dataset.expectedVal) {
+                    slot.className = "slot filled correct-slot";
+                    correctCount++;
+                } else {
+                    slot.className = "slot filled incorrect-slot";
+                }
+            }
+
+            const fb = document.getElementById('fbMap');
+            if (correctCount === 6) {
+                fb.className = "feedback-box show correct";
+                fb.innerHTML = "✅ <strong>¡Mapa Conceptual Perfecto!</strong> Has organizado correctamente todos los pilares teóricos de la Progresión 11.";
+            } else {
+                formativeErrors++;
+                fb.className = "feedback-box show incorrect";
+                fb.innerHTML = `⚠️ <strong>Has acertado ${correctCount} de 6.</strong> Revisa las casillas marcadas en rojo y ajusta tus respuestas.`;
+            }
+            saveState();
+        }
+
+        function checkCalc1() {
+            const val = document.getElementById('inputCalc1').value.trim().toLowerCase();
+            const fb = document.getElementById('fbCalc1');
+
+            if (val.includes("-1.89") || val.includes("-189000000")) {
+                fb.className = "feedback-box show correct";
+                fb.innerHTML = "✅ <strong>¡Cálculo Correcto!</strong> Δ<i>U</i><sub>p</sub> = −(2.1 C) × (90 × 10<sup>6</sup> V) = −1.89 × 10<sup>8</sup> J. El signo negativo confirma la enorme liberación de energía almacenada en el campo.";
+            } else {
+                formativeErrors++;
+                fb.className = "feedback-box show incorrect";
+                fb.innerHTML = "❌ <strong>Revisa tu cálculo:</strong> Multiplica −2.1 por 90,000,000. El resultado debe ser de aproximadamente −1.89 × 10<sup>8</sup> J.";
+            }
+            saveState();
+        }
+
+        function renderQuizNav() {
+            const grid = document.getElementById('quizNavGrid');
+            grid.innerHTML = "";
+            for (let i = 0; i < 10; i++) {
+                const btn = document.createElement('button');
+                btn.className = `quiz-nav-btn ${i === currentQuizIndex ? 'active' : ''} ${quizUserAnswers[i] !== null ? 'answered' : ''}`;
+                btn.innerText = i + 1;
+                btn.onclick = () => {
+                    currentQuizIndex = i;
+                    renderQuizQuestion(i);
+                    renderQuizNav();
+                };
+                grid.appendChild(btn);
+            }
+
+            const allAnswered = quizUserAnswers.every(a => a !== null);
+            const submitBtn = document.getElementById('btnSubmitQuiz');
+            if (allAnswered && !quizSubmitted) {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+            }
+        }
+
+        function renderQuizQuestion(idx) {
+            const box = document.getElementById('quizQuestionBox');
+            const qData = quizQuestions[idx];
+
+            let html = `<h3>${qData.q}</h3><div style="margin-top:12px;">`;
+
+            qData.options.forEach((optText, optIdx) => {
+                let isSelected = quizUserAnswers[idx] === optIdx;
+                let cardClass = "option-card";
+                if (isSelected) cardClass += " selected";
+
+                if (quizSubmitted) {
+                    if (optIdx === qData.correct) cardClass += " correct";
+                    else if (isSelected) cardClass += " incorrect";
+                }
+
+                html += `
+                    <div class="${cardClass}" onclick="selectQuizOption(${idx}, ${optIdx})">
+                        <span>${optText}</span>
+                    </div>
+                `;
+            });
+
+            html += `</div>`;
+
+            if (quizSubmitted) {
+                html += `
+                    <div class="feedback-box show correct" style="margin-top:12px;">
+                        💡 <strong>Explicación:</strong> ${qData.exp}
+                    </div>
+                `;
+            }
+
+            box.innerHTML = html;
+
+            document.getElementById('btnQuizPrev').disabled = (idx === 0);
+            document.getElementById('btnQuizNext').disabled = (idx === 9);
+        }
+
+        function selectQuizOption(qIdx, optIdx) {
+            if (quizSubmitted) return;
+            quizUserAnswers[qIdx] = optIdx;
+            renderQuizQuestion(qIdx);
+            renderQuizNav();
+            saveState();
+        }
+
+        function navQuiz(dir) {
+            currentQuizIndex += dir;
+            if (currentQuizIndex < 0) currentQuizIndex = 0;
+            if (currentQuizIndex > 9) currentQuizIndex = 9;
+            renderQuizQuestion(currentQuizIndex);
+            renderQuizNav();
+        }
+
+        function submitQuiz() {
+            quizSubmitted = true;
+            let correctCount = 0;
+            quizQuestions.forEach((q, i) => {
+                if (quizUserAnswers[i] === q.correct) correctCount++;
+            });
+
+            renderQuizQuestion(currentQuizIndex);
+            renderQuizNav();
+            document.getElementById('btnSubmitQuiz').disabled = true;
+
+            alert(`✅ EVALUACIÓN FINALIZADA\n\nResultado: ${correctCount} / 10 aciertos (${correctCount * 10}%).`);
+            goToStep(7);
+        }
+
+        function validateReflection() {
+            const text = document.getElementById('reflectionText').value;
+            const len = text.length;
+            document.getElementById('reflectionLength').innerText = `${len} / 30 caracteres`;
+            const btn = document.getElementById('btnGenerateCard');
+            btn.disabled = (len < 30);
+        }
+
+        function getQualitativeLevel(score) {
+            if (score === 10) return "Excelente";
+            if (score >= 8) return "Muy buen dominio";
+            if (score === 7) return "Buen dominio";
+            if (score === 6) return "En proceso";
+            return "Requiere reforzamiento";
+        }
+
+        function generateEvidenceCard() {
+            let correctCount = 0;
+            quizQuestions.forEach((q, i) => {
+                if (quizUserAnswers[i] === q.correct) correctCount++;
+            });
+
+            const scorePercent = correctCount * 10;
+            const mins = Math.floor(activeTimeSeconds / 60);
+            const secs = activeTimeSeconds % 60;
+            const timeStr = `${mins} min ${secs.toString().padStart(2, '0')} s`;
+            const timeCompact = `${mins}:${secs.toString().padStart(2, '0')}`;
+
+            const perc1 = document.getElementById('perc1').value;
+            const perc2 = document.getElementById('perc2').value;
+            const reflection = document.getElementById('reflectionText').value;
+
+            document.getElementById('evName').innerText = studentName;
+            document.getElementById('evGroup').innerText = studentGroup;
+            document.getElementById('evScore').innerText = `${correctCount} / 10 (${scorePercent}%)`;
+            document.getElementById('evLevel').innerText = getQualitativeLevel(correctCount);
+            document.getElementById('evTime').innerText = timeStr;
+            document.getElementById('evErrors').innerText = formativeErrors;
+            document.getElementById('evHints').innerText = hintsUsed;
+            document.getElementById('evPerception').innerText = `C: ${perc1}/4 | A: ${perc2}/4`;
+            
+            const now = new Date();
+            document.getElementById('evDate').innerText = now.toLocaleString('es-MX');
+            document.getElementById('evReflection').innerText = `"${reflection}"`;
+
+            const compactLine = `📊 REGISTRO DE ACTIVIDAD: P11 | ${correctCount}/10 | ${scorePercent}% | ${timeCompact} | IC:${formativeErrors} | P:${hintsUsed} | C:${perc1}/4 | A:${perc2}/4`;
+            document.getElementById('evCompactLine').innerText = compactLine;
+
+            document.getElementById('evidenceDisplayContainer').style.display = 'block';
+            window.scrollTo({ top: document.getElementById('evidenceDisplayContainer').offsetTop, behavior: 'smooth' });
+            saveState();
+        }
+
+        function reviewQuizAnswers() {
+            goToStep(6);
+        }
+
+        function saveState() {
+            try {
+                const data = {
+                    studentName,
+                    studentGroup,
+                    currentStep,
+                    activeTimeSeconds,
+                    formativeErrors,
+                    hintsUsed,
+                    quizUserAnswers,
+                    quizSubmitted,
+                    reflectionText: document.getElementById('reflectionText')?.value || "",
+                    perc1: document.getElementById('perc1')?.value || "3",
+                    perc2: document.getElementById('perc2')?.value || "4"
+                };
+                localStorage.setItem('progresion11_app_state', JSON.stringify(data));
+            } catch(e) {
+                console.warn("LocalStorage no disponible, funcionando en memoria de sesión.", e);
+            }
+        }
+
+        function loadSavedState() {
+            try {
+                const saved = localStorage.getItem('progresion11_app_state');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    if (data.studentName) {
+                        studentName = data.studentName;
+                        document.getElementById('inputName').value = studentName;
+                    }
+                    if (data.studentGroup) {
+                        studentGroup = data.studentGroup;
+                        document.getElementById('inputGroup').value = studentGroup;
+                    }
+                    if (data.activeTimeSeconds) activeTimeSeconds = data.activeTimeSeconds;
+                    if (data.formativeErrors) formativeErrors = data.formativeErrors;
+                    if (data.hintsUsed) hintsUsed = data.hintsUsed;
+                    if (data.quizUserAnswers) quizUserAnswers = data.quizUserAnswers;
+                    if (data.quizSubmitted) quizSubmitted = data.quizSubmitted;
+                    if (data.reflectionText) document.getElementById('reflectionText').value = data.reflectionText;
+
+                    updateTimerDisplay();
+                }
+            } catch(e) {
+                console.warn("Error al cargar estado almacenado:", e);
+            }
+        }
+    </script>
+</body>
+</html>
